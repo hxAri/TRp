@@ -1,2 +1,3 @@
-shop,keyset,source,discount,price,stock,sold,soldout,datetime,url
-5423858,basic-triangle-bikini-set-in-blue,tokopedia,IDR,0,250000,0,0,True,2019-02-24T18:27:54+07:00,https://www.tokopedia.com/archive-wmnz/basic-triangle-bikini-set-in-blue
+no,shop,keyset,source,currency,discount,price,stock,sold,soldout,datetime,url
+1,5423858,basic-triangle-bikini-set-in-blue,tokopedia,IDR,0,250000,0,0,True,2019-02-24T18:27:54+07:00,https://www.tokopedia.com/archive-wmnz/basic-triangle-bikini-set-in-blue
+2,5423858,basic-triangle-bikini-set-in-blue,tokopedia,IDR,0,250000,0,0,True,2019-02-24T18:27:54+07:00,https://www.tokopedia.com/archive-wmnz/basic-triangle-bikini-set-in-blue

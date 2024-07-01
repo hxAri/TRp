@@ -1,2 +1,3 @@
-shop,keyset,source,discount,price,stock,sold,soldout,datetime,url
-13119932,aluminium-profile-2020-t-slot-1-meter-100-cm,tokopedia,IDR,0,50000,0,0,True,2022-07-27T17:03:34+07:00,https://www.tokopedia.com/hikmah-nhaluminium/aluminium-profile-2020-t-slot-1-meter-100-cm
+no,shop,keyset,source,currency,discount,price,stock,sold,soldout,datetime,url
+1,13119932,aluminium-profile-2020-t-slot-1-meter-100-cm,tokopedia,IDR,0,50000,0,0,True,2022-07-27T17:03:34+07:00,https://www.tokopedia.com/hikmah-nhaluminium/aluminium-profile-2020-t-slot-1-meter-100-cm
+2,13119932,aluminium-profile-2020-t-slot-1-meter-100-cm,tokopedia,IDR,0,50000,0,0,True,2022-07-27T17:03:34+07:00,https://www.tokopedia.com/hikmah-nhaluminium/aluminium-profile-2020-t-slot-1-meter-100-cm
