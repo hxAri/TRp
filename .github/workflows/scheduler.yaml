@@ -3,19 +3,20 @@ name: "price-tracker"
 on:
     push:
         branches:
-            -	main
+        -	main
+    
     schedule: 
-    #        You can use https://crontab.guru to help generate
-    #        your cron syntax and confirm what time it will run
-    #
-    #        ┌───────────── minute 0, 30
-    #        │    ┌───────────── hour (0 - 23)
-    #        │    │ ┌───────────── day of the month (1 - 31)
-    #        │    │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-    #        │    │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-    #        │    │ │ │ │
-    #        0,30 * * * *
-    -   cron: "0,30 * * * *"
+        #        You can use https://crontab.guru to help generate
+        #        your cron syntax and confirm what time it will run
+        #
+        #        ┌───────────── minute 0, 30
+        #        │    ┌───────────── hour (0 - 23)
+        #        │    │ ┌───────────── day of the month (1 - 31)
+        #        │    │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+        #        │    │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+        #        │    │ │ │ │
+        #        0,30 * * * *
+        - cron:  "0,30 * * * *"
 jobs:
     tracker:
         runs-on: ubuntu-latest
@@ -32,7 +33,7 @@ jobs:
                 python3 src/main
         -   name: Patching changes progress
             run: |
-                now=$(date +"%Y-%m-%d %H:%I")
+                now=$(date +"%Y-%m-%d %H:%M")
                 git config --global user.name hxari
                 git config --global user.email 90847846+hxAri@users.noreply.github.com
                 git add ./data
