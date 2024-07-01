@@ -124,7 +124,10 @@ class Main:
 					if "name" in component and component['name'] == "product_content" and \
 					   "data" in component and component['data']:
 						currency = component['data'][0]['price']['currency']
-						discount = component['data'][0]['campaign']['discountedPrice']
+						discount = component['data'][0]['price']['discPercentage'] \
+							.replace( "\x25", "" )
+						if not discount:
+							discount = 0
 						price = component['data'][0]['price']['value']
 						stock = component['data'][0]['campaign']['stock']
 						break
