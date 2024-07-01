@@ -3,8 +3,8 @@ name: "price-tracker"
 on:
     push:
         branches:
-        -	main
-    schedule:
+            -	main
+    schedule: 
     #        You can use https://crontab.guru to help generate
     #        your cron syntax and confirm what time it will run
     #
