@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+
+from builtins import int as Int, str as Str
+from os import system
+from os.path import isfile
+from requests import Response, Session
+from sys import path as paths
+from typing import final, Literal, MutableMapping, MutableSequence, Union
+from urllib.parse import urlparse
+from yaml import safe_load as YamlLoader
+
+
+BASEPARTS:MutableSequence[Str] = paths[0].split( "\x2f" )
+BASEPATH:Str = "\x2f".join( BASEPARTS[:BASEPARTS.index( "src" )] )
+""" The Base Path of Facebook Application """
+
+BASEPARTS:MutableSequence[Str] = paths[4].split( "\x2f" )
+BASEVENV:Str = "\x2f".join( BASEPARTS[:BASEPARTS.index( "lib" )] )
+""" The Base Path of Virtual Environment """
+
+
+@final
+class Main:
+	
+	configs:MutableMapping[Literal[ "keysets", "platforms" ],Union[Str,MutableSequence[Union[MutableMapping[Literal[ "name", "targets" ],Union[MutableMapping[Literal[ "url", "headers" ],Union[MutableMapping[Str,Str],Str]],Str]],Str]]]]
+	""" Application Configuration """
+	
+	filename:Str
+	""" ... """
+	
+	pathname:Str
+	""" ... """
+	
+	def __init__( self ) -> None:
+		
+		""" Construct method of class Main """
+		
+		self.filename = f"{BASEPATH}/src/properties"
+		self.pathname = f"{BASEPATH}/src"
+		
+		if not isfile( self.filename ):
+			print( f"No such file or directory {self.filename}" )
+			exit( 1 )
+		
+		self.configs = YamlLoader( open( self.filename, "r" ) )
+		if not isinstance( self.configs['keysets'], MutableSequence ):
+			self.configs['keysets'] = self.configs['keysets'].split( "\x2c" )
+		...
+	
+	def main( self ) -> None:
+		
+		for platform in self.configs['platforms']:
+			if not platform['targets']:
+				continue
+			for target in platform['targets']:
+				match platform['name']:
+					case "shopee":
+						self.shopee( target )
+					case "tokopedia":
+						self.tokopedia( target )
+					case _:
+						...
+				...
+			...
+		...
+	
+	def tokopedia( self, target:MutableMapping[Literal[ "url", "headers" ],Union[MutableMapping[Str,Str],Str]] ) -> None:
+		exploded = list( filter( lambda part: part, urlparse( target['url'] ).path.split( "\x2f" ) ) )
+		username = exploded[0]
+		keyset = exploded[1]
+		session = Session()
+		response = session.post( "https://gql.tokopedia.com/graphql/PDPGetLayoutQuery",
+			headers={
+				"Host": "gql.tokopedia.com",
+				"Sec-Ch-Ua": "\"Chromium\";v=\"123\", \"Not:A-Brand\";v=\"8\"",
+				"X-Version": "103e16d",
+				"Sec-Ch-Ua-Platform": "\"Linux\"",
+				"Sec-Ch-Ua-Mobile": "?0",
+				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Safari/537.36",
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"X-Source": "tokopedia-lite",
+				"X-Device": "desktop",
+				"X-Tkpd-Lite-Service": "zeus",
+				"X-Tkpd-Akamai": "pdpGetLayout",
+				"Origin": "https://www.tokopedia.com",
+				"Sec-Fetch-Site": "same-site",
+				"Sec-Fetch-Mode": "cors",
+				"Sec-Fetch-Dest": "empty",
+				"Referer": target['url'],
+				"Accept-Language": "en-US,en;q=0.9",
+				"Priority": "u=1, i",
+				"Cookie": "bm_sz=605A44B1E614EF84D23A22CC2F615DF6~YAAQpenOF/H3vV2QAQAAmSdZbRguGrY8vcn1DO94wtn7Kfq6uV7IQA/DIHKYgzUCNAMY3wYZ14k56W0Z+PYq77kyBTnowvp0CWPzjxWcYUTdl7xRnFmjCQ9uG1HyE+3lQxBX7ZpGur73QE/fBxIXC2Ez/gR3zWgAsKrfXRhEC7cjgYKC5naQxqfGeSmA2Y9vIbDWsaHU7VaUafh2te6iZa5t9aq4EJ8URBH2pdviVl6kKWPXUBlWhiaH1kMK0klUCAA105pWfvYfkVLYOZEIfLfcJIqHouHGlImQfP0Zbs/hHxQ2tlkpXApQ+XM9G+urimPdwoxaVmSsWLRzPM2gI6t2AFkQyY0xHIq0aYUyGLYkVmYTo0Izo78LEAhELM+T99zKfeIRjMgakMjUsFvfd9JW~4277815~4405552; _gid=GA1.2.1850968960.1719821479; _gcl_au=1.1.1175203858.1719821479; _abck=25DDA8827DEF3127E844DC77892D070C~0~YAAQpenOF1T4vV2QAQAAXDFZbQz7j+IF20uPBCsMVTdFQp4Lb8XVIivQeECR2wjgv8i/cUIfIZDEg8CjCGYPGofK3fTTlDUGvBKePXMJw5GCagZHHDlrB0ol6vEJ5tavuU8qTJPl1AbZMPAYOzXbmllPg9v3X0vPXY9KgpmgPSKKi3saa4rtSWZKr7jOMUVVvOrnuWnpO+jkLCsYpbzhk4b2xwMxexFetCjpc0E5mlkleFzVmR6MAn95s7HlLSCNcaO0MsrF2UkCGjLgB86pbNL/15f/b6g/J8NJ1j4ftQEFV8luhKAVV1Wz8Ewb16koxhRKkOHg8UIuUiesXMYIDxmqr7lrh6TNWub7Cpf+N/+bOY1s8ilCaVRGoAIpxh5tSX06MMFg4LMX2mQuThLDC0JuQ4g2R0XY9rZC~-1~||0||~-1; ak_bmsc=92E5F905F48B7D1968CFB65AAC01D408~000000000000000000000000000000~YAAQpenOF3P4vV2QAQAAATNZbRgjL/YugizB4qRK79T2mTVxsym4+MGjAxqy++aNO0VDb0Py0sas2fFV41xsDR2aAGt+vQsUtanTACikgOEzbScdYRIKKp2yMpF7rNRNWnie+5SckGpximfgEAF0PSE7I05iPAbyPSKtEBaslg6blXo+NEINYFd6DEWYo4oXUUOdlXViy2kBrQZyjPK4mEGyJXD0IIqgEOwxwvK0jIsQxaiS4NZ191xgE9BoVgpz9sdN0lW8cWc69ixjrl/SqiVKgAVzErrO7F5cKR/fB0bCrT8tk5xoTMMc4lDLoVbt1gIHr4JfgLLZWCzRK83CVJ6MWoHWz3jWdtn4+9IhNqTx243Dz7ZFyirWF1jTCK3WWWMm3DImOEKmNqEFe6ehulBsSgs50Y/s2NS/5r2rUx9NXiSdy0DeJUcCKzVdwjYxj/FFqmJO2bePXkBgocQz+C4=; _UUID_NONLOGIN_=8a9fad0ed9fb24e48448b4af5c29cbf6; hfv_banner=true; _SID_Tokopedia_=2-kpX7YykJlqijU5ADym6RBkw4RQUf-OJBR3MyQawZvafZW1wXdCfZy3J2I_fV3CSwZ5jbhpt1a502xDkDN-PWvlv9a-F5vlCY3ilRAylwhAxw9vKQKzwkNx6uvSQGOe; DID=f44207d7082e5580b9701b2a40f19e6aa59d55b6942ebfbb862e86117a46297f28090bb043a301cbc7db4db7a4bde5a7; DID_JS=ZjQ0MjA3ZDcwODJlNTU4MGI5NzAxYjJhNDBmMTllNmFhNTlkNTViNjk0MmViZmJiODYyZTg2MTE3YTQ2Mjk3ZjI4MDkwYmIwNDNhMzAxY2JjN2RiNGRiN2E0YmRlNWE347DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=; AMP_TOKEN=%24NOT_FOUND; _fbp=fb.1.1719821487087.921795481426519557; _gat_UA-9801603-1=1; _dc_gtm_UA-9801603-1=1; _dc_gtm_UA-126956641-6=1; ISID=%7B%22www.tokopedia.com%22%3A%22d3d3LnRva29wZWRpYS5jb20%3D.8758d724194ea40349fdcffdab4e393b.1719821481042.1719821481042.1719821549069.2%22%7D; _ga_70947XW48P=GS1.1.1719821479.1.1.1719821549.58.0.0; _ga=GA1.2.333492602.1719821479"
+			},
+			json=[
+				{
+					"operationName": "PDPGetLayoutQuery",
+					"variables": {
+						"shopDomain": username,
+						"productKey": keyset,
+						"layoutID": "",
+						"apiVersion": 1,
+						"extParam": "",
+					},
+					"query": "fragment ProductVariant on pdpDataProductVariant {\n  errorCode\n  parentID\n  defaultChild\n  sizeChart\n  totalStockFmt\n  variants {\n    productVariantID\n    variantID\n    name\n    identifier\n    option {\n      picture {\n        urlOriginal: url\n        urlThumbnail: url100\n        __typename\n      }\n      productVariantOptionID\n      variantUnitValueID\n      value\n      hex\n      stock\n      __typename\n    }\n    __typename\n  }\n  children {\n    productID\n    price\n    priceFmt\n    slashPriceFmt\n    discPercentage\n    optionID\n    optionName\n    productName\n    productURL\n    picture {\n      urlOriginal: url\n      urlThumbnail: url100\n      __typename\n    }\n    stock {\n      stock\n      isBuyable\n      stockWordingHTML\n      minimumOrder\n      maximumOrder\n      __typename\n    }\n    isCOD\n    isWishlist\n    campaignInfo {\n      campaignID\n      campaignType\n      campaignTypeName\n      campaignIdentifier\n      background\n      discountPercentage\n      originalPrice\n      discountPrice\n      stock\n      stockSoldPercentage\n      startDate\n      endDate\n      endDateUnix\n      appLinks\n      isAppsOnly\n      isActive\n      hideGimmick\n      isCheckImei\n      minOrder\n      __typename\n    }\n    thematicCampaign {\n      additionalInfo\n      background\n      campaignName\n      icon\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nfragment ProductMedia on pdpDataProductMedia {\n  media {\n    type\n    urlOriginal: URLOriginal\n    urlThumbnail: URLThumbnail\n    urlMaxRes: URLMaxRes\n    videoUrl: videoURLAndroid\n    prefix\n    suffix\n    description\n    variantOptionID\n    __typename\n  }\n  videos {\n    source\n    url\n    __typename\n  }\n  __typename\n}\n\nfragment ProductCategoryCarousel on pdpDataCategoryCarousel {\n  linkText\n  titleCarousel\n  applink\n  list {\n    categoryID\n    icon\n    title\n    isApplink\n    applink\n    __typename\n  }\n  __typename\n}\n\nfragment ProductHighlight on pdpDataProductContent {\n  name\n  price {\n    value\n    currency\n    priceFmt\n    slashPriceFmt\n    discPercentage\n    __typename\n  }\n  campaign {\n    campaignID\n    campaignType\n    campaignTypeName\n    campaignIdentifier\n    background\n    percentageAmount\n    originalPrice\n    discountedPrice\n    originalStock\n    stock\n    stockSoldPercentage\n    threshold\n    startDate\n    endDate\n    endDateUnix\n    appLinks\n    isAppsOnly\n    isActive\n    hideGimmick\n    __typename\n  }\n  thematicCampaign {\n    additionalInfo\n    background\n    campaignName\n    icon\n    __typename\n  }\n  stock {\n    useStock\n    value\n    stockWording\n    __typename\n  }\n  variant {\n    isVariant\n    parentID\n    __typename\n  }\n  wholesale {\n    minQty\n    price {\n      value\n      currency\n      __typename\n    }\n    __typename\n  }\n  isCashback {\n    percentage\n    __typename\n  }\n  isTradeIn\n  isOS\n  isPowerMerchant\n  isWishlist\n  isCOD\n  preorder {\n    duration\n    timeUnit\n    isActive\n    preorderInDays\n    __typename\n  }\n  __typename\n}\n\nfragment ProductCustomInfo on pdpDataCustomInfo {\n  icon\n  title\n  isApplink\n  applink\n  separator\n  description\n  __typename\n}\n\nfragment ProductInfo on pdpDataProductInfo {\n  row\n  content {\n    title\n    subtitle\n    applink\n    __typename\n  }\n  __typename\n}\n\nfragment ProductDetail on pdpDataProductDetail {\n  content {\n    title\n    subtitle\n    applink\n    showAtFront\n    isAnnotation\n    __typename\n  }\n  __typename\n}\n\nfragment ProductDataInfo on pdpDataInfo {\n  icon\n  title\n  isApplink\n  applink\n  content {\n    icon\n    text\n    __typename\n  }\n  __typename\n}\n\nfragment ProductSocial on pdpDataSocialProof {\n  row\n  content {\n    icon\n    title\n    subtitle\n    applink\n    type\n    rating\n    __typename\n  }\n  __typename\n}\n\nfragment ProductDetailMediaComponent on pdpDataProductDetailMediaComponent {\n  title\n  description\n  contentMedia {\n    url\n    ratio\n    type\n    __typename\n  }\n  show\n  ctaText\n  __typename\n}\n\nquery PDPGetLayoutQuery($shopDomain: String, $productKey: String, $layoutID: String, $apiVersion: Float, $userLocation: pdpUserLocation, $extParam: String, $tokonow: pdpTokoNow, $deviceID: String) {\n  pdpGetLayout(shopDomain: $shopDomain, productKey: $productKey, layoutID: $layoutID, apiVersion: $apiVersion, userLocation: $userLocation, extParam: $extParam, tokonow: $tokonow, deviceID: $deviceID) {\n    requestID\n    name\n    pdpSession\n    basicInfo {\n      alias\n      createdAt\n      isQA\n      id: productID\n      shopID\n      shopName\n      minOrder\n      maxOrder\n      weight\n      weightUnit\n      condition\n      status\n      url\n      needPrescription\n      catalogID\n      isLeasing\n      isBlacklisted\n      isTokoNow\n      menu {\n        id\n        name\n        url\n        __typename\n      }\n      category {\n        id\n        name\n        title\n        breadcrumbURL\n        isAdult\n        isKyc\n        minAge\n        detail {\n          id\n          name\n          breadcrumbURL\n          isAdult\n          __typename\n        }\n        __typename\n      }\n      txStats {\n        transactionSuccess\n        transactionReject\n        countSold\n        paymentVerified\n        itemSoldFmt\n        __typename\n      }\n      stats {\n        countView\n        countReview\n        countTalk\n        rating\n        __typename\n      }\n      __typename\n    }\n    components {\n      name\n      type\n      position\n      data {\n        ...ProductMedia\n        ...ProductHighlight\n        ...ProductInfo\n        ...ProductDetail\n        ...ProductSocial\n        ...ProductDataInfo\n        ...ProductCustomInfo\n        ...ProductVariant\n        ...ProductCategoryCarousel\n        ...ProductDetailMediaComponent\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+				}
+			]
+		)
+		content = response.json()
+		if isinstance( content, MutableSequence ):
+			content = content.pop()
+		if "data" in content and content['data'] and \
+		   "pdpGetLayout" in content['data'] and content['data']['pdpGetLayout']:
+			shopId = content['data']['pdpGetLayout']['basicInfo']['shopID']
+			shopDateTime = content['data']['pdpGetLayout']['basicInfo']['createdAt']
+			productId = content['data']['pdpGetLayout']['basicInfo']['id']
+			currency = "IDR"
+			discount = 0
+			price = 0
+			stock = 0
+			sold = int( content['data']['pdpGetLayout']['txStats']['countSold'] ) if "txStats" in content['data']['pdpGetLayout'] else 0
+			if "components" in content['data']['pdpGetLayout'] and content['data']['pdpGetLayout']['components']:
+				for component in content['data']['pdpGetLayout']['components']:
+					if "name" in component and component['name'] == "product_content" and \
+					   "data" in component and component['data']:
+						currency = component['data'][0]['price']['currency']
+						discount = component['data'][0]['campaign']['discountedPrice']
+						price = component['data'][0]['price']['value']
+						stock = component['data'][0]['campaign']['stock']
+						break
+					...
+				...
+			filename = f"{BASEPATH}/public/datasets/tokopedia-{shopId}-{productId}.csv"
+			if not isfile( filename ):
+				with open( filename, "a" ) as fopen:
+					fopen.write( "\x2c".join( self.configs['keysets'] ) )
+					fopen.write( "\x0a" )
+					fopen.close()
+			lines = 0
+			with open( filename, "r" ) as fopen:
+				lines = len( fopen.readlines() )
+				fopen.close()
+			dataset = [ lines, shopId, keyset, "tokopedia", currency, discount, price, stock, sold, stock <= 0, shopDateTime, target['url'] ]
+			dataset = map( lambda value: f"{value}", dataset )
+			dataset = list( dataset )
+			with open( filename, "a" ) as fopen:
+				fopen.write( "\x2c".join( dataset ) )
+				fopen.write( "\x0a" )
+				fopen.close()
+			filename = f"{BASEPATH}/public/tokopedia.csv"
+			with open( filename, "r" ) as fopen:
+				lines = len( fopen.readlines() )
+				fopen.close()
+			dataset = [ lines, shopId, keyset, "tokopedia", currency, discount, price, stock, sold, stock <= 0, shopDateTime, target['url'] ]
+			dataset = map( lambda value: f"{value}", dataset )
+			dataset = list( dataset )
+			with open( filename, "a" ) as fopen:
+				fopen.write( "\x2c".join( dataset ) )
+				fopen.write( "\x0a" )
+				fopen.close()
+		...
+	
+	...
+	
+
+system( "clear" )
+
+
+if __name__ == "__main__":
+	main = Main()
+	main.main()

@@ -1,0 +1,51 @@
+
+keysets: "no,shop,keyset,source,currency,discount,price,stock,sold,soldout,datetime,url"
+platforms:
+-   name: shopee
+    targets: []
+-   name: tokopedia
+    targets:
+    -   url: "https://www.tokopedia.com/muhfarha/baju-jersey-sepeda-panjang-rb-terbaik"
+        headers: {}
+    -   url: "https://www.tokopedia.com/hepitime22/sunflower-cardboard-craft-cc-ss01"
+        headers: {}
+    -   url: "https://www.tokopedia.com/victoriafashion-/2-pcs-pakaian-dalam-wanita-bikini-sexy-underwear-premium-fuschia-bc01d"
+        headers: {}
+    -   url: "https://www.tokopedia.com/vinsmoketobacco/dm-74-kuning-mole"
+        headers: {}
+    -   url: "https://www.tokopedia.com/rereaudio/knop-kenop-potensio-geser-fader-mixer-high-quality-merah-7084f"
+        headers: {}
+    -   url: "https://www.tokopedia.com/krinjani/ck-sport-cotton-bikini-berkualitas"
+        headers: {}
+    -   url: "https://www.tokopedia.com/archive-wmnz/basic-triangle-bikini-set-in-blue"
+        headers: {}
+    -   url: "https://www.tokopedia.com/livin-electronic/professional-dynamic-vocal-microphone-coil-dynamic-cardioid"
+        headers: {}
+    -   url: "https://www.tokopedia.com/megasellcom/router-tplink-tl-wr841hp"
+        headers: {}
+    -   url: "https://www.tokopedia.com/jasasuntik14/hr869-fygalery-hl0187-tempat-sendok-garpu-dengan-tirisan-peralatan-dap"
+        headers: {}
+    -   url: "https://www.tokopedia.com/dailyskincarebkt/azarine-hydrasoothe-sunscreen-gel-spf-gel-spf45-pa-50ml"
+        headers: {}
+    -   url: "https://www.tokopedia.com/ujungcell/vocher-zero-koso-indosat-im3-nasional-xp-31-des-2022"
+        headers: {}
+    -   url: "https://www.tokopedia.com/nvlogic/anti-slip-mouse-grip-tape-skin-diy-custom-universal-gaming-mouse-putih-db4d3"
+        headers: {}
+    -   url: "https://www.tokopedia.com/archive-kelontonga/wifi-card"
+        headers: {}
+    -   url: "https://www.tokopedia.com/mhmmdyxz/vizard-gx-8022-mouse-gaming"
+        headers: {}
+    -   url: "https://www.tokopedia.com/mymelodybabyshop/pelindung-sudut-meja-frog"
+        headers: {}
+    -   url: "https://www.tokopedia.com/fajartani/benih-padi-unggul-malai-panjang-terbaru-pw8-pandan-wali"
+        headers: {}
+    -   url: "https://www.tokopedia.com/paktunas/media-tanam-pupuk-npk-mutiara-16-16-16"
+        headers: {}
+    -   url: "https://www.tokopedia.com/va-pro-audio/waves-soundgrid-server-c-series"
+        headers: {}
+    -   url: "https://www.tokopedia.com/officialbuyerseller/100-pcs-mainan-slime-love"
+        headers: {}
+    -   url: "https://www.tokopedia.com/purnama-store-1/fidget-hand-spinner-gift-for-fans-of-the-medieval-magical-wizardr"
+        headers: {}
+    -   url: "https://www.tokopedia.com/hikmah-nhaluminium/aluminium-profile-2020-t-slot-1-meter-100-cm"
+        headers: {}
