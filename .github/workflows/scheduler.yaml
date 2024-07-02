@@ -33,8 +33,8 @@ jobs:
                 run: |
                     git config --global user.name "Action"
                     git config --global user.email "90847846+hxAri@users.noreply.github.com"
-            -   name: Sign commit and push changes
+            -   name: Commit and push changes
                 run: |
                     git add public
-                    git commit -S -m "[BOT] Sign commit and push changes $(date +"%Y-%m-%d %H:%M UTC")"
+                    git commit -m "[BOT] Sign commit and push changes $(date +"%Y-%m-%d %H:%M UTC")"
                     git push
