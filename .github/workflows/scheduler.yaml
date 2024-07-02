@@ -44,6 +44,8 @@ jobs:
                     now=$(date +"%Y-%m-%d %H:%M UTC")
                     git config --global user.name hxari
                     git config --global user.email 90847846+hxAri@users.noreply.github.com
+                    git config --global user.signinkey 5C1FD06B46C9E26E
+                    git config --global commit.gpgsign true
                     git add ./public
                     git commit -S -m "[BOT] Sign commit and push changes ${now}" || echo -e "Nothing to commit"
                     git push || echo "Nothing to push"
