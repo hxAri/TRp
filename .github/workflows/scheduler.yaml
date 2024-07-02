@@ -28,8 +28,6 @@ jobs:
                     passphrase: ${{ secrets.PASSPHRASE }}
                     git_user_signingkey: true
                     git_commit_gpgsign: true
-            -   name: Checkout v3
-                uses: actions/checkout@v3
             -   uses: actions/setup-python@v4
                 with:
                     python-version: 3.11
