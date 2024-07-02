@@ -19,7 +19,7 @@ jobs:
     tracker:
         runs-on: ubuntu-latest
         steps:
-            -   name: Checkout
+            -   name: Checkout v2
                 uses: actions/checkout@v2
             -   name: Import GPG key
                 id: import-gpg
@@ -27,13 +27,10 @@ jobs:
                 with:
                     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
                     passphrase: ${{ secrets.PASSPHRASE }}
-            -   name: GPG user IDs
-                run: |
-                    echo "fingerprint: ${{ steps.import-gpg.outputs.fingerprint }}"
-                    echo "keyid:       ${{ steps.import-gpg.outputs.keyid }}"
-                    echo "name:        ${{ steps.import-gpg.outputs.name }}"
-                    echo "email:       ${{ steps.import-gpg.outputs.email }}"
-            -   uses: actions/checkout@v3
+                    git_user_signingkey: true
+                    git_commit_gpgsign: true
+            -   name: Checkout v3
+                uses: actions/checkout@v3
             -   uses: actions/setup-python@v4
                 with:
                     python-version: 3.11
