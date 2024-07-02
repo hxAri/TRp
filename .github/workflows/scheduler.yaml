@@ -26,6 +26,10 @@ jobs:
                     python-version: 3.11
                     cache: pip
             -   run: pip install -r requirements.txt
+            -   name: Pulling API progress
+                run: |
+                    export PYTHONPATH=.:$PYTHONPATH
+                    python3 src/main
             -   name: Checkout v4
                 uses: actions/checkout@v4
             -   name: Import GPG key
@@ -35,10 +39,6 @@ jobs:
                     passphrase: ${{ secrets.PASSPHRASE }}
                     git_user_signingkey: true
                     git_commit_gpgsign: true
-            -   name: Pulling API progress
-                run: |
-                    export PYTHONPATH=.:$PYTHONPATH
-                    python3 src/main
             -   name: Sign commit and push changes
                 run: |
                     now=$(date +"%Y-%m-%d %H:%M UTC")
