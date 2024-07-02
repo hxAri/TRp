@@ -137,6 +137,7 @@ class Main:
 						break
 					...
 				...
+			print( f"Writing target: {keyset}" )
 			filename = f"{BASEPATH}/public/datasets/tokopedia-{shopId}-{productId}.csv"
 			if not isfile( filename ):
 				with open( filename, "a" ) as fopen:

@@ -27,15 +27,13 @@ jobs:
                     passphrase: ${{ secrets.PASSPHRASE }}
                     git_user_signingkey: true
                     git_commit_gpgsign: true
+                    git_push_gpgsign: true
             -   name: Verify GPG key import
                 run: gpg --list-secret-keys --keyid-format LONG
             -   name: Configure Git to use GPG key
                 run: |
-                    git config --global user.name "hxari"
+                    git config --global user.name "Action"
                     git config --global user.email "90847846+hxAri@users.noreply.github.com"
-                    git config --global user.signingkey "5C1FD06B46C9E26E"
-                    git config --global commit.gpgsign true
-                    git config --list
             -   name: Setup Python
                 uses: actions/setup-python@v4
                 with:
