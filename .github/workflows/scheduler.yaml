@@ -28,8 +28,6 @@ jobs:
                     cache: pip
             -   name: Installing Requirements
                 run: pip install -r requirements.txt
-            -   name: Checkout v4
-                uses: actions/checkout@v4
             -   name: Import GPG key
                 uses: crazy-max/ghaction-import-gpg@v4
                 with:
