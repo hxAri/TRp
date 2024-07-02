@@ -40,7 +40,7 @@ jobs:
         run: gpg --list-secret-keys --keyid-format LONG
 
       - name: Pull API progress
-        run: python3 src/main.py
+        run: python3 src/main
 
       - name: Sign commit and push changes
         run: |
