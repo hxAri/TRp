@@ -1,4 +1,3 @@
-pyaml==14.11.3
+PyYAML==6.0.1
 requests==2.32.2
 typing==3.7.4.3
-yml==0.0.1
