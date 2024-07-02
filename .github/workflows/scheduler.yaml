@@ -1,53 +1,57 @@
+
 name: "price-tracker"
-
 on:
-  push:
-    branches:
-      - main
-  schedule: 
-    - cron: "0,30 * * * *"
-
+    push:
+        branches:
+            -   main
+    schedule: 
+        #            You can use https://crontab.guru to help generate
+        #            your cron syntax and confirm what time it will run
+        #            ┌───────────── minute 0, 30
+        #            │    ┌───────────── hour (0 - 23)
+        #            │    │ ┌───────────── day of the month (1 - 31)
+        #            │    │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+        #            │    │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+        #            │    │ │ │ │
+        #            0,30 * * * *
+        -   cron:  "0,30 * * * *"
 jobs:
-  tracker:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-          cache: pip
-
-      - name: Install Requirements
-        run: pip install -r requirements.txt
-
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v4
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-
-      - name: Configure GPG key for Git
-        run: |
-          git config --global user.signingkey "5C1FD06B46C9E26E"
-          git config --global commit.gpgsign true
-
-      - name: List GPG keys
-        run: gpg --list-secret-keys --keyid-format LONG
-
-      - name: Pull API progress
-        run: python3 src/main
-
-      - name: Sign commit and push changes
-        run: |
-          now=$(date +"%Y-%m-%d %H:%M UTC")
-          git config --global user.name "hxari"
-          git config --global user.email "90847846+hxAri@users.noreply.github.com"
-          git add ./public
-          git commit -S -m "[BOT] Sign commit and push changes ${now}" || echo "Nothing to commit"
-          git push || echo "Nothing to push"
-        continue-on-error: true
+    tracker:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout v4
+                uses: actions/checkout@v4
+            -   name: Setup Python
+                uses: actions/setup-python@v4
+                with:
+                    python-version: 3.11
+                    cache: pip
+            -   name: Installing Requirements
+                run: pip install -r requirements.txt
+            -   name: Import GPG key
+                uses: crazy-max/ghaction-import-gpg@v4
+                with:
+                    gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+                    passphrase: ${{ secrets.PASSPHRASE }}
+                    git_user_signingkey: true
+                    git_commit_gpgsign: true
+            -   name: Verify GPG key import
+                run: |
+                    echo "List secret keys after import:"
+                    gpg --list-secret-keys --keyid-format LONG
+            -   name: Configure Git to use GPG key
+                run: |
+                    git config --global user.name "hxari"
+                    git config --global user.email "90847846+hxAri@users.noreply.github.com"
+                    git config --global user.signingkey "5C1FD06B46C9E26E"
+                    git config --global commit.gpgsign true
+                    echo "Git configuration:"
+                    git config --list
+            -   name: Pulling API progress
+                run: python3 src/main
+            -   name: Sign commit and push changes
+                run: |
+                    now=$(date +"%Y-%m-%d %H:%M UTC")
+                    git add public
+                    git commit -S -m "[BOT] Sign commit and push changes ${now}"
+                    git push
