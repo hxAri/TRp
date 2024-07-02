@@ -28,6 +28,7 @@ jobs:
                     git_user_signingkey: true
                     git_commit_gpgsign: true
                     git_push_gpgsign: true
+                    fingerprint: 589E62385E243955E704343F5C1FD06B46C9E26E
             -   name: Verify GPG key import
                 run: gpg --list-secret-keys --keyid-format LONG
             -   name: Configure Git to use GPG key
