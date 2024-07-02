@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from builtins import int as Int, str as Str
+from datetime import datetime
 from os import system
 from os.path import isfile
 from requests import Response, Session
@@ -107,12 +108,15 @@ class Main:
 			]
 		)
 		content = response.json()
+		shopDateTime = datetime.now().strftime(
+			"%d.%m-%Y %H:%M"
+		)
 		if isinstance( content, MutableSequence ):
 			content = content.pop()
 		if "data" in content and content['data'] and \
 		   "pdpGetLayout" in content['data'] and content['data']['pdpGetLayout']:
 			shopId = content['data']['pdpGetLayout']['basicInfo']['shopID']
-			shopDateTime = content['data']['pdpGetLayout']['basicInfo']['createdAt']
+			# shopDateTime = content['data']['pdpGetLayout']['basicInfo']['createdAt']
 			productId = content['data']['pdpGetLayout']['basicInfo']['id']
 			currency = "IDR"
 			discount = 0
