@@ -53,5 +53,5 @@ jobs:
                 run: |
                     now=$(date +"%Y-%m-%d %H:%M UTC")
                     git add public
-                    git commit -S -m "[BOT] Sign commit and push changes ${now}"
+                    git commit -m "[BOT] Sign commit and push changes ${now}"
                     git push
